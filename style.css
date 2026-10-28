@@ -591,3 +591,9 @@ textarea.nm{min-height:0;resize:none;overflow:hidden;line-height:1.45;padding:9p
 .creds b{font-size:1.35rem;letter-spacing:.04em;overflow-wrap:anywhere}
 .creds.one{grid-template-columns:1fr}.creds.one b{font-size:2rem;letter-spacing:.12em}
 .codein{font-size:1.3rem;letter-spacing:.12em;font-weight:800}
+/* ---------- QR: uploaded image + save to phone ---------- */
+.qrimg{width:264px;max-width:100%;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:14px;display:block;margin:0 auto}
+.qrsave{margin:10px auto 0;max-width:300px}
+.qrtip{margin:6px 0 0;text-align:center}
+.qrdrop{min-height:120px}
+.qrdrop .drop-in img{max-height:160px;width:auto;background:#fff;border-radius:10px}

@@ -1,6 +1,6 @@
 // ระบบทำบุญวัด — service worker: ใช้งานได้แม้เน็ตไม่ดี และติดตั้งเป็นแอปได้
 // เปลี่ยนเลขเวอร์ชันทุกครั้งที่แก้ไฟล์ เพื่อให้เครื่องผู้ใช้โหลดของใหม่
-const V = 'wat-tambun-v13';
+const V = 'wat-tambun-v14';
 const CORE = ['./', './index.html', './style.css', './app.js', './firebase-config.js', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/logo.webp'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

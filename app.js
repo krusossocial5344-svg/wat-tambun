@@ -214,6 +214,7 @@ const onlineNow=()=>S.presence.filter(p=>DEMO||Date.now()-tsMs(p.at)<150000);
 
 const defaultAcct=()=>S.accounts.find(a=>a.isDefault)||S.accounts[0];
 function accountsFor(c){const l=(c.acctIds||[]).map(id=>S.accounts.find(a=>a.id===id)).filter(Boolean);if(l.length)return l;const d=defaultAcct();return d?[d]:[]}
+const hasQR=a=>!!(a&&(a.promptpay||a.qrImg));
 const acctTitle=a=>a.label||[a.bank,a.name].filter(Boolean).join(' · ')||a.no||a.promptpay;
 
 /* ---------- who is viewing ---------- */
@@ -489,7 +490,7 @@ function shareBox(id){return `<div class="sharebox"><input id="sl-${id}" readonl
 
 /* ---------- campaign page ---------- */
 function detail(c){
-  const ppAccs=accountsFor(c).filter(a=>a.promptpay);
+  const ppAccs=accountsFor(c).filter(hasQR);
   return `<div class="row"><button class="btn ghost sm" data-go="home">${ic('back',18)} กลับไปรายการงานบุญ ปี พ.ศ. ${campYear(c)}</button><span class="spacer"></span>${isStaff()?`<button class="btn sm violet" data-go="tv-${c.id}" title="เปิดบนทีวีหรือโปรเจกเตอร์ในวันงาน">${ic('eye',16)} โหมดจอใหญ่</button>`:''}${isAdmin()?`<button class="iconbtn" data-share="${c.id}" aria-label="แชร์งานนี้" title="แชร์งานนี้">${ic('share',18)}</button><button class="iconbtn" data-go="e-${c.id}" aria-label="แก้ไขงานบุญ" title="แก้ไขงานบุญ">${ic('edit',18)}</button>`:''}</div>
   ${isAdmin()&&ui.shareFor===c.id?`<div class="card">${shareBox(c.id)}</div>`:''}
   <section class="chero ${gcls(c.type)}" id="d-hero" data-id="${c.id}">${heroInner(c)}</section>
@@ -528,7 +529,7 @@ function listInner(c){
 /* ---------- public: send a transfer slip ---------- */
 function slipForm(c){
   if(ui.slipDone)return `<div class="card tint2" style="text-align:center"><h3>${ic('check',22)} ส่งสลิปเรียบร้อย</h3><p class="bless">${esc(bless('thanks'))}</p><p class="note">เจ้าหน้าที่จะตรวจสอบสลิป แล้วรายชื่อของท่านจะขึ้นในรายนามผู้ร่วมบุญ${ui.slipDone==='r'?' ส่วนคำขอใบอนุโมทนาส่งถึงแอดมินของวัดแล้ว':''}</p><div><button class="btn" id="slip-again">ส่งสลิปอีกใบ</button></div></div>`;
-  const accs=accountsFor(c),pp=accs.filter(a=>a.promptpay),banks=accs.filter(a=>a.no);
+  const accs=accountsFor(c),pp=accs.filter(hasQR),banks=accs.filter(a=>a.no);
   return `<form class="card form giveflow" id="f-slip" data-c="${c.id}" novalidate>
   <div class="gf-head"><h3>${ic('heart',20)} ร่วมทำบุญออนไลน์</h3><p class="note">ทำตาม 3 ขั้นตอน โอนแล้ว<b>ต้องแนบสลิปในขั้นตอนที่ 3 ทันที</b> ระบบจึงจะลงรายนามให้</p></div>
   <ol class="gsteps">
@@ -554,7 +555,9 @@ function slipForm(c){
 function qrArea(pp){
   const sel=pp.find(a=>a.id===ui.qrAcct)||pp[0];
   return `${pp.length>1?`<div class="seg">${pp.map(a=>`<button type="button" class="chip" data-qracct="${a.id}" aria-pressed="${a.id===sel.id}">${esc(acctTitle(a))}</button>`).join('')}</div>`:''}
-  <div class="qrwrap"><div class="qrhead">${ic('qr',16)} สแกนจ่ายพร้อมเพย์</div><canvas id="qr" width="264" height="264" aria-label="คิวอาร์โค้ดพร้อมเพย์"></canvas><div class="qa">${esc(sel.name||acctTitle(sel))}<br>${esc(sel.promptpay)}</div></div>`;
+  <div class="qrwrap"><div class="qrhead">${ic('qr',16)} ${sel.promptpay?'สแกนจ่ายพร้อมเพย์':'สแกนโอนเข้าบัญชีวัด'}</div>${sel.promptpay?`<canvas id="qr" width="264" height="264" aria-label="คิวอาร์โค้ดพร้อมเพย์"></canvas>`:`<img class="qrimg" id="qrimg" src="${esc(sel.qrImg)}" alt="คิวอาร์โค้ดบัญชี ${esc(acctTitle(sel))}">`}<div class="qa">${esc(sel.name||acctTitle(sel))}${sel.promptpay?'<br>'+esc(sel.promptpay):sel.bank?'<br>'+esc(sel.bank):''}</div></div>
+  <button type="button" class="btn block qrsave" id="qr-save" data-acct="${sel.id}">${ic('download',17)} บันทึกรูปคิวอาร์ลงเครื่อง</button>
+  <p class="note qrtip">ใช้มือถือเครื่องเดียวกัน: กดบันทึกรูป แล้วเปิดแอปธนาคาร เลือก <b>สแกน → เลือกรูปจากอัลบั้ม</b></p>`;
 }
 function receiptFields(p,v={}){
   return `<div class="bt-rc"><span class="lbl">${ic('receipt',15)} ข้อมูลสำหรับออกใบอนุโมทนา (ส่งถึงแอดมินของวัดเท่านั้น)</span>
@@ -700,12 +703,13 @@ function accountsPage(){
     <label class="f">ธนาคาร<input name="bank" value="${esc(a?.bank)}" placeholder="เช่น ธนาคารกรุงไทย"></label>
     <label class="f">ชื่อบัญชี<input name="accname" value="${esc(a?.name)}"></label>
     <label class="f">เลขที่บัญชี<input name="no" value="${esc(a?.no)}" inputmode="numeric"></label>
-    <label class="f">พร้อมเพย์ (เบอร์มือถือ / เลข 13 หลัก)<input name="promptpay" value="${esc(a?.promptpay)}" inputmode="numeric"></label></div>
+    <label class="f">พร้อมเพย์ (เบอร์มือถือ / เลข 13 หลัก)<input name="promptpay" value="${esc(a?.promptpay)}" inputmode="numeric"><small class="note">ใส่แล้วระบบสร้างคิวอาร์พร้อมยอดเงินให้เอง</small></label>
+    <div class="f"><span>รูปคิวอาร์จากแอปธนาคาร (ไม่บังคับ)</span><label class="drop qrdrop${a?.qrImg?' has':''}"><input type="file" name="qrfile" accept="image/*"><span class="drop-in">${a?.qrImg?`<img src="${esc(a.qrImg)}" alt="คิวอาร์ของบัญชีนี้"><small>แตะเพื่อเปลี่ยนรูป</small>`:`${ic('qr',24)}<b>เลือกรูปคิวอาร์</b><small>ใช้เมื่อบัญชีไม่มีพร้อมเพย์ เช่น คิวอาร์รับเงินของธนาคาร</small>`}</span></label>${a?.qrImg?`<label class="check"><input type="checkbox" name="qrdel"> ลบรูปคิวอาร์นี้</label>`:''}</div></div>
     <label class="switch"><input type="checkbox" name="isDefault" ${a?.isDefault||(!a&&!S.accounts.length)?'checked':''}> บัญชีหลัก (ใช้กับงานที่ไม่ได้เลือกบัญชี)</label>
     <div class="row"><button class="btn primary" type="submit">${a?'บันทึก':ic('plus',18)+' เพิ่มบัญชี'}</button>${a?`<button class="btn" type="button" data-acct-cancel>ยกเลิก</button>`:''}</div></form>`;
-  return `<p class="note">วัดมีหลายบัญชีได้ แต่ละงานบุญเลือกได้ว่าจะแสดงบัญชีไหน บัญชีที่ใส่เลขพร้อมเพย์ (เบอร์มือถือ หรือเลข 13 หลัก) จะแสดงคิวอาร์โค้ดให้สแกนจ่ายได้</p>
+  return `<p class="note">วัดมีหลายบัญชีได้ แต่ละงานบุญเลือกได้ว่าจะแสดงบัญชีไหน คิวอาร์สำหรับสแกนโอนมี 2 แบบ: <b>ใส่เลขพร้อมเพย์</b> ระบบสร้างคิวอาร์พร้อมยอดให้เอง หรือ<b>อัปโหลดรูปคิวอาร์</b>จากแอปธนาคารของวัด ผู้ทำบุญกดบันทึกรูปคิวอาร์ลงเครื่องได้</p>
   <div class="list">${S.accounts.map(a=>ui.editAcct===a.id?form(a):`<article class="card"><div class="acct-item"><span class="mini"></span><div style="display:grid;gap:2px;min-width:0"><div class="row"><b>${esc(acctTitle(a))}</b>${a.isDefault?'<span class="pill ok">บัญชีหลัก</span>':''}<span class="note">ใช้กับ ${used(a.id)} งาน</span></div>
-    <span class="note">${esc(a.bank)}${a.name?' · '+esc(a.name):''}</span>${a.no?`<span class="num">${esc(a.no)}</span>`:''}${a.promptpay?`<span>พร้อมเพย์ ${esc(a.promptpay)}</span>`:''}</div></div>
+    <span class="note">${esc(a.bank)}${a.name?' · '+esc(a.name):''}</span>${a.no?`<span class="num">${esc(a.no)}</span>`:''}${a.promptpay?`<span>พร้อมเพย์ ${esc(a.promptpay)}</span>`:''}${a.qrImg?`<span class="pill info">${ic('qr',12)} มีรูปคิวอาร์</span>`:''}</div></div>
     <div class="row"><button class="btn sm" data-acct-edit="${a.id}">${ic('edit',15)} แก้ไข</button>${!a.isDefault?`<button class="btn sm" data-acct-def="${a.id}">ตั้งเป็นบัญชีหลัก</button>`:''}<span class="spacer"></span>${ui.delAcct===a.id?`<span class="note">ลบบัญชีนี้?${used(a.id)?` (${used(a.id)} งานจะใช้บัญชีหลักแทน)`:''}</span><button class="btn danger solid sm" data-acct-del-yes="${a.id}">ยืนยันลบ</button><button class="btn sm" data-acct-del-no>ยกเลิก</button>`:`<button class="iconbtn ghost sm" data-acct-del="${a.id}" aria-label="ลบบัญชี">${ic('trash',16)}</button>`}</div></article>`).join('')||'<div class="card empty">ยังไม่มีบัญชี เพิ่มบัญชีแรกด้านล่าง</div>'}</div>
   ${form(null)}`;
 }
@@ -766,7 +770,8 @@ function bind(){
   all('[data-record]',b=>goCampaign(b.dataset.record,true));
   all('[data-give]',b=>{const id=b.dataset.give;if(cur()?.id!==id){ui={};go(id)}setTimeout(()=>document.getElementById('give')?.scrollIntoView({behavior:'smooth',block:'start'}),60)});
   all('[data-slip]',b=>{ui.slipFor=b.dataset.slip;ui.slipDone=null;ui.slipOpenAt=Date.now();const c=cur();document.getElementById('slipform').innerHTML=slipForm(c);bindSlip();document.getElementById('f-slip')?.scrollIntoView({behavior:'smooth',block:'start'})});
-  all('[data-qracct]',b=>{ui.qrAcct=b.dataset.qracct;const c=cur();const q=document.getElementById('qrarea');if(q){q.innerHTML=qrArea(accountsFor(c).filter(a=>a.promptpay));bind()}});
+  on('qr-save',e=>saveQR(e.currentTarget.dataset.acct));
+  all('[data-qracct]',b=>{ui.qrAcct=b.dataset.qracct;const c=cur();const q=document.getElementById('qrarea');if(q){q.innerHTML=qrArea(accountsFor(c).filter(hasQR));bind();drawQR()}});
   const qa=$('qr-amt');if(qa)qa.oninput=()=>{ui.qrAmt=qa.value;clearTimeout(qa.t);qa.t=setTimeout(drawQR,250)};
   all('[data-share]',b=>{ui.shareFor=ui.shareFor===b.dataset.share?null:b.dataset.share;ui.keepScroll=true;render(true)});
   all('[data-copy]',b=>{const i=$('sl-'+b.dataset.copy);copy(i.value,i)});
@@ -793,9 +798,13 @@ function bind(){
   const fs=$('f-set');if(fs)fs.onsubmit=async e=>{e.preventDefault();const v=id=>$(id).value.trim();
     const ok=await run(()=>setDoc(doc(db,'settings','temple'),{name:v('s-name'),place:v('s-place'),address:v('s-address'),phone:v('s-phone'),facebook:v('s-fb'),footerNote:v('s-footnote'),signer:v('s-signer'),signerTitle:v('s-signertitle'),b_welcome:v('s-bw'),b_thanks:v('s-bt'),b_cert:v('s-bc'),b_tv:v('s-btv'),types:cleanTypes($('s-types').value.split('\n'))},{merge:true}),'บันทึกการตั้งค่าแล้ว',['settings','settings','temple','แก้ไขข้อมูลวัด']);
     if(ok){ui={};go('home')}};
+  document.querySelectorAll('.qrdrop input').forEach(inp=>inp.onchange=async()=>{const fl=inp.files[0];if(!fl)return;try{const u=await compressImage(fl,700,.9);inp.parentElement.classList.add('has');inp.nextElementSibling.innerHTML=`<img src="${u}" alt="ตัวอย่างคิวอาร์"><small>จะบันทึกเมื่อกดบันทึก</small>`}catch(e){toast('อ่านรูปไม่ได้')}});
   document.querySelectorAll('.acct-form').forEach(f=>f.onsubmit=async e=>{e.preventDefault();
     const v=n=>f.elements[n].value.trim(),data={label:v('label'),bank:v('bank'),name:v('accname'),no:v('no'),promptpay:v('promptpay').replace(/[^\d]/g,'')};
-    if(!data.no&&!data.promptpay){toast('ใส่เลขที่บัญชีหรือพร้อมเพย์อย่างน้อยหนึ่งอย่าง');return}
+    const old=S.accounts.find(a=>a.id===f.dataset.id),qf=f.elements.qrfile.files[0];
+    if(qf){try{data.qrImg=await compressImage(qf,700,.9)}catch(err){toast('อ่านรูปคิวอาร์ไม่ได้');return}}else if(f.elements.qrdel?.checked)data.qrImg='';
+    const qrOk=data.qrImg!==undefined?!!data.qrImg:!!old?.qrImg;
+    if(!data.no&&!data.promptpay&&!qrOk){toast('ใส่เลขที่บัญชี พร้อมเพย์ หรือรูปคิวอาร์ อย่างน้อยหนึ่งอย่าง');return}
     if(data.promptpay&&![10,13,15].includes(data.promptpay.length)){toast('พร้อมเพย์ต้องเป็นเบอร์มือถือ 10 หลัก หรือเลข 13 หลัก');return}
     const id=f.dataset.id||('a'+uid()),makeDef=f.elements.isDefault.checked||S.accounts.length===0;
     const ok=await run(async()=>{const b=writeBatch(db);b.set(doc(db,'accounts',id),{...data,isDefault:makeDef||(S.accounts.find(a=>a.id===id)?.isDefault??false)},{merge:true});
@@ -1076,7 +1085,7 @@ function loadScript(urls){
 const QR_URLS=['https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js','https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js','https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js','https://unpkg.com/qrcode-generator@1.4.4/qrcode.js'];
 async function drawQR(){
   const cv=document.getElementById('qr');if(!cv)return;const c=cur();if(!c)return;
-  const accs=accountsFor(c).filter(a=>a.promptpay),a=accs.find(x=>x.id===ui.qrAcct)||accs[0];if(!a)return;
+  const accs=accountsFor(c).filter(hasQR),a=accs.find(x=>x.id===ui.qrAcct)||accs[0];if(!a||!a.promptpay)return;
   const amt=Number(String(ui.qrAmt||'').replace(/[^\d.]/g,''))||0;
   const x=cv.getContext('2d');
   try{await loadScript(['https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js','https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js','https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js','https://unpkg.com/qrcode-generator@1.4.4/qrcode.js'])}
@@ -1086,6 +1095,31 @@ async function drawQR(){
   x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);x.fillStyle='#171927';
   for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect(off+k*cell,off+r*cell,cell,cell);
   const qa=cv.parentElement.querySelector('.qa');if(qa)qa.innerHTML=`${esc(a.name||acctTitle(a))}<br>${esc(a.promptpay)}${amt?` · ${baht(amt)}`:''}`;
+}
+
+/* รูปคิวอาร์สำหรับบันทึกลงเครื่อง: มีชื่อวัด งานบุญ ชื่อบัญชี และยอด ไปสแกนในแอปธนาคารได้ */
+async function saveQR(id){
+  const c=cur(),a=S.accounts.find(x=>x.id===id);if(!c||!a)return;
+  const amt=a.promptpay?(Number(String(ui.qrAmt||'').replace(/[^\d.]/g,''))||0):0;
+  let src;
+  if(a.promptpay){try{await loadScript(QR_URLS)}catch(e){toast('โหลดคิวอาร์ไม่ได้ ลองใหม่อีกครั้ง');return}
+    const q=window.qrcode(0,'M');q.addData(promptpayPayload(a.promptpay,amt));q.make();const n=q.getModuleCount(),cv=document.createElement('canvas'),cell=Math.floor(560/(n+4));cv.width=cv.height=cell*(n+4);
+    const x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);x.fillStyle='#000';for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect((k+2)*cell,(r+2)*cell,cell,cell);src=cv}
+  else{src=await loadImg(a.qrImg);if(!src){toast('อ่านรูปคิวอาร์ไม่ได้');return}}
+  const W=720,H=1080,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#1d2a5c');g.addColorStop(1,'#4b2c7a');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.textAlign='center';x.textBaseline='alphabetic';
+  await drawLogo(x,W/2,92,46);
+  x.fillStyle='#fff';x.font=FONT(800,40);x.fillText(wrapText(x,S.temple.name||'',W-80,1)[0],W/2,190);
+  x.fillStyle='rgba(255,255,255,.82)';x.font=FONT(600,28);wrapText(x,c.title,W-100,2).forEach((l,i)=>x.fillText(l,W/2,236+i*38));
+  const bx=90,by=320,bw=W-180;rr(x,bx,by,bw,bw,32);x.fillStyle='#fff';x.fill();
+  const pad=34,iw=bw-pad*2,sc=Math.min(iw/src.width,iw/src.height),dw=src.width*sc,dh=src.height*sc;x.imageSmoothingEnabled=!a.promptpay;x.drawImage(src,bx+(bw-dw)/2,by+(bw-dh)/2,dw,dh);x.imageSmoothingEnabled=true;
+  let y=by+bw+64;x.fillStyle='#fff';x.font=FONT(800,34);x.fillText(wrapText(x,a.name||acctTitle(a),W-80,1)[0],W/2,y);
+  y+=44;x.fillStyle='rgba(255,255,255,.82)';x.font=FONT(600,26);x.fillText(wrapText(x,a.promptpay?'พร้อมเพย์ '+a.promptpay:[a.bank,a.no].filter(Boolean).join(' '),W-80,1)[0],W/2,y);
+  if(amt){y+=58;x.fillStyle='#ffd166';x.font=FONT(800,44);x.fillText(baht(amt),W/2,y)}
+  x.fillStyle='rgba(255,255,255,.7)';x.font=FONT(500,22);x.fillText('โอนแล้วกรุณาส่งสลิปในหน้าเว็บ เพื่อลงรายนาม',W/2,H-40);
+  const blob=await new Promise(r=>cv.toBlob(r,'image/png'));
+  if(await downloadBlob(blob,`คิวอาร์ทำบุญ-${(a.label||'วัด').replace(/[\\/:*?"<>|]/g,'')}.png`))toast('บันทึกรูปแล้ว เปิดแอปธนาคาร แล้วสแกนจากรูปในอัลบั้ม',5000);
 }
 
 /* ---------- files ---------- */
@@ -1427,7 +1461,8 @@ function tvUpdate(c,first){
     p.hidden=false;p.classList.remove('show');void p.offsetWidth;p.classList.add('show');clearTimeout(p.t);p.t=setTimeout(()=>{p.hidden=true},5200);confetti()}
 }
 async function tvQR(c){
-  const box=document.getElementById('tv-qr');if(!box)return;const a=accountsFor(c).find(x=>x.promptpay)||null;
+  const box=document.getElementById('tv-qr');if(!box)return;const a=accountsFor(c).find(x=>x.promptpay)||null,qi=accountsFor(c).find(x=>x.qrImg);
+  if(!a&&qi){box.innerHTML=`<div class="tv-card"><span>สแกนร่วมทำบุญ</span><img src="${esc(qi.qrImg)}" alt="คิวอาร์" style="width:300px;height:300px;object-fit:contain;background:#fff;border-radius:16px"><b>${esc(qi.bank||acctTitle(qi))}</b><small>${esc(qi.name||'')}</small></div>`;return}
   if(!a){const b=accountsFor(c).find(x=>x.no);box.innerHTML=b?`<div class="tv-card"><span>โอนเข้าบัญชี</span><b>${esc(b.bank)}</b><strong>${esc(b.no)}</strong><small>${esc(b.name||'')}</small></div>`:'';return}
   box.innerHTML=`<div class="tv-card"><span>สแกนร่วมทำบุญ</span><canvas id="tvq" width="300" height="300"></canvas><b>พร้อมเพย์ ${esc(a.promptpay)}</b><small>${esc(a.name||'')}</small></div>`;
   try{await loadScript(QR_URLS);const q=window.qrcode(0,'M');q.addData(promptpayPayload(a.promptpay,0));q.make();const cv=document.getElementById('tvq'),x=cv.getContext('2d'),nn=q.getModuleCount(),cell=Math.floor(cv.width/(nn+2)),off=Math.floor((cv.width-cell*nn)/2);x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);x.fillStyle='#171927';for(let r=0;r<nn;r++)for(let k=0;k<nn;k++)if(q.isDark(r,k))x.fillRect(off+k*cell,off+r*cell,cell,cell)}catch(e){box.querySelector('canvas')?.remove()}
