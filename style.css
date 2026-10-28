@@ -580,3 +580,14 @@ textarea.nm{min-height:0;resize:none;overflow:hidden;line-height:1.45;padding:9p
 .policy{display:grid;gap:6px;max-height:60vh;overflow:auto;line-height:1.6}
 .policy h4{margin:10px 0 0}
 .policy p{margin:0;color:var(--muted)}
+
+/* ---------- staff login with username ---------- */
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.85rem;margin:6px 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.bad-t{color:var(--bad,#d33)!important;font-weight:700}
+.creds{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.creds div{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:2px}
+.creds span{color:var(--muted);font-size:.8rem}
+.creds b{font-size:1.35rem;letter-spacing:.04em;overflow-wrap:anywhere}
+.creds.one{grid-template-columns:1fr}.creds.one b{font-size:2rem;letter-spacing:.12em}
+.codein{font-size:1.3rem;letter-spacing:.12em;font-weight:800}

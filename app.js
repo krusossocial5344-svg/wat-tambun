@@ -39,7 +39,7 @@ const bless=k=>(S.temple['b_'+k]||BLESS[k]);
 const DEFAULT_TYPES=['ทอดกฐิน','ทอดผ้าป่า','บูรณะ/ก่อสร้าง','ค่าน้ำค่าไฟ','ภัตตาหารเพล','ทุนการศึกษา','ทั่วไป'];
 
 /* ---------- icons ---------- */
-const IC={plus:'<path d="M12 5v14M5 12h14"/>',share:'<path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13M7 8l5-5 5 5"/>',image:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/>',back:'<path d="M15 18l-6-6 6-6"/>',home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',wallet:'<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c1.9.6 3.1 2.4 3.5 5.5"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/>',logout:'<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',copy:'<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',download:'<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',up:'<path d="M7 14l5-5 5 5"/>',wheel:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.2"/><path d="M12 3.5v6.3M12 14.2v6.3M3.5 12h6.3M14.2 12h6.3M6 6l4.4 4.4M13.6 13.6 18 18M18 6l-4.4 4.4M10.4 13.6 6 18"/>',login:'<path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="M14 17l5-5-5-5M19 12H8"/>',inbox:'<path d="M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/>',file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',qr:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',pen:'<path d="M4 20c3-1 4-4 6-6l7-7a2.1 2.1 0 0 0-3-3l-7 7c-2 2-5 3-6 6"/><path d="M13 6l3 3"/>',menu:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',phone:'<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',upload:'<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'};
+const IC={key:'<circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 8.7-8.7M17 6l2.5 2.5M14.5 8.5l2 2"/>',plus:'<path d="M12 5v14M5 12h14"/>',share:'<path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13M7 8l5-5 5 5"/>',image:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/>',back:'<path d="M15 18l-6-6 6-6"/>',home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',wallet:'<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>',users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5c1.9.6 3.1 2.4 3.5 5.5"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/>',logout:'<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/>',copy:'<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',download:'<path d="M12 4v12M7 11l5 5 5-5M5 20h14"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',up:'<path d="M7 14l5-5 5 5"/>',wheel:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.2"/><path d="M12 3.5v6.3M12 14.2v6.3M3.5 12h6.3M14.2 12h6.3M6 6l4.4 4.4M13.6 13.6 18 18M18 6l-4.4 4.4M10.4 13.6 6 18"/>',login:'<path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="M14 17l5-5-5-5M19 12H8"/>',inbox:'<path d="M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/>',file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',qr:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/>',pen:'<path d="M4 20c3-1 4-4 6-6l7-7a2.1 2.1 0 0 0-3-3l-7 7c-2 2-5 3-6 6"/><path d="M13 6l3 3"/>',menu:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',phone:'<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',upload:'<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'};
 const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 
 /* ---------- demo data layer (same calls as Firestore, kept in this browser) ---------- */
@@ -230,12 +230,58 @@ if(DEMO){
     if(u&&u.email){const e=u.email.toLowerCase();
       if(ADMIN_EMAILS.map(x=>x.toLowerCase()).includes(e))role='admin';
       else{try{const r=await getDoc(doc(db,'roles',e));if(r.exists()){const v=r.data().role;role=v==='admin'?'admin':v==='staff'?'staff':'viewer'}}catch(err){}}
-      if(role==='viewer')toast('บัญชี '+u.email+' ยังไม่ได้รับสิทธิ์ ให้แอดมินเพิ่มที่เมนู “เจ้าหน้าที่”',6000);
+      if(role==='viewer')toast('บัญชี '+shownId(u.email)+' ยังไม่ได้รับสิทธิ์ ให้แอดมินเพิ่มที่เมนู “เจ้าหน้าที่”',6000);
     }
     watchPrivate();heartbeat();render();
   });
 }
-async function login(){if(DEMO){toast('โหมดตัวอย่าง: เลือกบทบาทจากแถบด้านบนแทน');return}const p=new F.GoogleAuthProvider();try{await F.signInWithPopup(auth,p)}catch(e){if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment')await F.signInWithRedirect(auth,p);else if(e.code!=='auth/popup-closed-by-user')toast('เข้าสู่ระบบไม่สำเร็จ: '+e.code,5000)}}
+/* เจ้าหน้าที่ที่ไม่มีอีเมล: แอดมินออก "รหัสเจ้าหน้าที่" 8 ตัวให้ ใส่รหัสอย่างเดียวก็เข้าได้
+   เบื้องหลังระบบแปลงรหัสเป็นบัญชีภายใน c<แฮชของรหัส>@staff.<โดเมนโปรเจกต์> (ไม่มีกล่องจดหมายจริง และไม่เก็บรหัสไว้ที่ไหน) */
+const STAFF_DOMAIN='staff.'+(firebaseConfig.authDomain||'wat.local');
+const isPassAcct=e=>String(e||'').toLowerCase().endsWith('@'+STAFF_DOMAIN);
+const shownId=e=>isPassAcct(e)?'บัญชีรหัสเจ้าหน้าที่':e;
+const CODE_ABC='abcdefghjkmnpqrstuvwxyz23456789';
+const normCode=c=>String(c||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const fmtCode=c=>c.slice(0,4)+'-'+c.slice(4);
+function genCode(){const r=crypto.getRandomValues(new Uint32Array(8));return [...r].map(x=>CODE_ABC[x%CODE_ABC.length]).join('')}
+async function codeEmail(code){const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('wat-staff:'+code));return 'c'+[...new Uint8Array(h)].slice(0,10).map(b=>b.toString(16).padStart(2,'0')).join('')+'@'+STAFF_DOMAIN}
+async function googleLogin(){const p=new F.GoogleAuthProvider();try{await F.signInWithPopup(auth,p)}catch(e){if(e.code==='auth/popup-blocked'||e.code==='auth/operation-not-supported-in-this-environment')await F.signInWithRedirect(auth,p);else if(e.code!=='auth/popup-closed-by-user')toast('เข้าสู่ระบบไม่สำเร็จ: '+e.code,5000)}}
+function login(){
+  if(DEMO){toast('โหมดตัวอย่าง: เลือกบทบาทจากแถบด้านบนแทน');return}
+  const ov=sheet(`<div class="row"><h3>${ic('login',20)} เจ้าหน้าที่วัด เข้าสู่ระบบ</h3><span class="spacer"></span><button class="iconbtn ghost sm" data-close aria-label="ปิด">${ic('x',18)}</button></div>
+  <form class="form" id="lg-pass"><label class="f">รหัสเจ้าหน้าที่ (8 ตัว)<input id="lg-c" type="password" class="codein" autocomplete="current-password" autocapitalize="none" spellcheck="false" maxlength="12" placeholder="xxxx-xxxx"></label>
+  <label class="check"><input type="checkbox" id="lg-show"> แสดงรหัส</label>
+  <button class="btn primary block" type="submit">${ic('key',18)} เข้าสู่ระบบ</button><p class="note" id="lg-msg">รหัสเจ้าหน้าที่ขอได้จากแอดมินของวัด</p></form>
+  <div class="or"><span>หรือ</span></div>
+  <button class="btn block" id="lg-google">${ic('users',18)} เข้าสู่ระบบด้วยบัญชี Google</button>`);
+  const inp=ov.querySelector('#lg-c');inp.focus();
+  ov.querySelector('#lg-show').onchange=e=>{inp.type=e.target.checked?'text':'password'};
+  ov.querySelector('#lg-google').onclick=()=>{ov.remove();googleLogin()};
+  ov.querySelector('#lg-pass').onsubmit=async e=>{e.preventDefault();const code=normCode(inp.value),msg=ov.querySelector('#lg-msg');
+    if(code.length!==8){msg.textContent='รหัสเจ้าหน้าที่มี 8 ตัว (ตัวอักษรอังกฤษและตัวเลข)';msg.classList.add('bad-t');return}
+    const btn=ov.querySelector('[type=submit]');btn.disabled=true;
+    try{await F.signInWithEmailAndPassword(auth,await codeEmail(code),code);ov.remove();go('home')}
+    catch(err){btn.disabled=false;msg.classList.add('bad-t');msg.textContent=err.code==='auth/too-many-requests'?'ลองผิดหลายครั้ง กรุณารอสักครู่แล้วลองใหม่':err.code==='auth/network-request-failed'?'เชื่อมต่ออินเทอร์เน็ตไม่ได้':err.code==='auth/operation-not-allowed'?'แอดมินยังไม่ได้เปิด Email/Password ใน Firebase':'รหัสไม่ถูกต้อง หรือถูกยกเลิกแล้ว'}};
+}
+/* แอดมินออกรหัส: ใช้ Firebase app ตัวที่สอง เพื่อไม่ให้แอดมินหลุดจากระบบ */
+async function createCodeStaff(name,role){
+  const A=await import(`https://www.gstatic.com/firebasejs/${FBV}/firebase-app.js`);
+  const sec=A.initializeApp(firebaseConfig,'mk'+Date.now()),sa=F.initializeAuth(sec,{persistence:F.inMemoryPersistence});
+  const code=genCode(),em=await codeEmail(code);
+  try{const cr=await F.createUserWithEmailAndPassword(sa,em,code);await F.updateProfile(cr.user,{displayName:name});await F.signOut(sa)}
+  finally{A.deleteApp(sec).catch(()=>{})}
+  const w=writeBatch(db);w.set(doc(db,'roles',em),{role,name,kind:'code',addedAt:serverTimestamp()});
+  addLog(w,'create','role',em,`ออกรหัสเจ้าหน้าที่ให้ ${name} (${role==='admin'?'แอดมิน':'เจ้าหน้าที่'})`);await w.commit();
+  return code;
+}
+function showCreds(name,code){
+  const url=location.origin+location.pathname,txt=`เข้าระบบทำบุญ ${S.temple.name||''}\nเว็บ: ${url}\nรหัสเจ้าหน้าที่ของ ${name}: ${fmtCode(code)}\n(กด “เจ้าหน้าที่วัด เข้าสู่ระบบ” แล้วใส่รหัสนี้ อย่าบอกต่อคนอื่น)`;
+  const ov=sheet(`<h3>${ic('check',20)} ออกรหัสให้ ${esc(name)} แล้ว</h3>
+  <div class="creds one"><div><span>รหัสเจ้าหน้าที่</span><b class="num">${esc(fmtCode(code))}</b></div></div>
+  <p class="note"><b>รหัสแสดงครั้งเดียว</b> คัดลอกส่งให้เจ้าหน้าที่หรือจดไว้ก่อนปิดหน้านี้ ถ้าลืมหรือรหัสหลุด ให้กด “ยกเลิกรหัส” แล้วออกรหัสใหม่</p>
+  <div class="row"><button class="btn" id="cr-copy">${ic('copy',16)} คัดลอกข้อความส่ง LINE</button><span class="spacer"></span><button class="btn primary" data-close>เสร็จแล้ว</button></div>`,'',true);
+  ov.querySelector('#cr-copy').onclick=()=>copy(txt);
+}
 async function logout(){if(DEMO){window.__setDemo('viewer');return}try{if(user)await deleteDoc(doc(db,'presence',user.uid))}catch(e){}await F.signOut(auth);ui={};go('home')}
 
 /* presence: each signed-in staff member writes "I'm here" every minute so others see who is entering data */
@@ -664,14 +710,18 @@ function accountsPage(){
   ${form(null)}`;
 }
 function staffPage(){
-  if(DEMO)return `<div class="card"><p>ในระบบจริง แอดมินเพิ่มเจ้าหน้าที่ได้ด้วยอีเมล Google ของแต่ละคน เจ้าหน้าที่จะบันทึกรายชื่อผู้ทำบุญได้อย่างเดียว</p><p class="note">หน้านี้ใช้งานได้เมื่อเชื่อม Firebase แล้ว ตอนนี้ลองสลับ “ดูในฐานะ เจ้าหน้าที่” จากแถบด้านบน เพื่อดูว่าเจ้าหน้าที่จะเห็นหน้าจอแบบไหน</p></div>`;
-  return `<p class="note">เจ้าหน้าที่เข้าสู่ระบบด้วยบัญชี Google ของตัวเอง แล้วบันทึกรายชื่อผู้ทำบุญได้อย่างเดียว ส่วนแอดมินทำได้ทุกอย่าง</p>
-  <div class="list">${S.roles.length?S.roles.sort((a,b)=>a.email.localeCompare(b.email)).map(r=>`<article class="card"><div class="row"><span class="avatar g${hue(r.email)}">${esc(initial(r.email))}</span><b style="overflow-wrap:anywhere">${esc(r.email)}</b><span class="pill ${r.role==='admin'?'wait':'ok'}">${r.role==='admin'?'แอดมิน':'เจ้าหน้าที่'}</span></div>
-   <div class="row">${r.role==='admin'?`<button class="btn sm" data-role="${esc(r.email)}" data-to="staff">เปลี่ยนเป็นเจ้าหน้าที่</button>`:`<button class="btn sm" data-role="${esc(r.email)}" data-to="admin">เปลี่ยนเป็นแอดมิน</button>`}<span class="spacer"></span>${ui.delRole===r.email?`<span class="note">เอาสิทธิ์ออก?</span><button class="btn danger solid sm" data-role-del-yes="${esc(r.email)}">ยืนยัน</button><button class="btn sm" data-role-del-no>ยกเลิก</button>`:`<button class="btn ghost danger sm" data-role-del="${esc(r.email)}">เอาสิทธิ์ออก</button>`}</div></article>`).join(''):'<div class="card empty">ยังไม่มีเจ้าหน้าที่</div>'}</div>
+  if(DEMO)return `<div class="card"><p>ในระบบจริง แอดมินเพิ่มเจ้าหน้าที่ได้ 2 แบบ: ด้วยอีเมล Google หรือออก<b>ชื่อผู้ใช้ + รหัสผ่าน</b>ให้คนที่ไม่มีอีเมล เจ้าหน้าที่จะบันทึกรายชื่อผู้ทำบุญได้อย่างเดียว</p><p class="note">หน้านี้ใช้งานได้เมื่อเชื่อม Firebase แล้ว</p></div>`;
+  const kind=ui.rKind||'code',lbl=r=>isPassAcct(r.email)?(r.name||'เจ้าหน้าที่'):r.email;
+  return `<p class="note">เจ้าหน้าที่บันทึกรายชื่อผู้ทำบุญได้อย่างเดียว ส่วนแอดมินทำได้ทุกอย่าง เข้าสู่ระบบได้ทั้งด้วยบัญชี Google หรือด้วยชื่อผู้ใช้ที่แอดมินออกให้</p>
+  <div class="list">${S.roles.length?S.roles.sort((x,y)=>lbl(x).localeCompare(lbl(y),'th')).map(r=>{const pass=isPassAcct(r.email);return `<article class="card"><div class="row"><span class="avatar g${hue(r.email)}">${esc(initial(lbl(r)))}</span><div style="display:grid;min-width:0"><b style="overflow-wrap:anywhere">${esc(lbl(r))}</b><span class="note">${pass?`${ic('key',13)} เข้าด้วยรหัสเจ้าหน้าที่`:`${ic('users',13)} บัญชี Google`}</span></div><span class="spacer"></span><span class="pill ${r.role==='admin'?'wait':'ok'}">${r.role==='admin'?'แอดมิน':'เจ้าหน้าที่'}</span></div>
+   <div class="row">${r.role==='admin'?`<button class="btn sm" data-role="${esc(r.email)}" data-to="staff">เปลี่ยนเป็นเจ้าหน้าที่</button>`:`<button class="btn sm" data-role="${esc(r.email)}" data-to="admin">เปลี่ยนเป็นแอดมิน</button>`}<span class="spacer"></span>${ui.delRole===r.email?`<span class="note">เอาสิทธิ์ออก?</span><button class="btn danger solid sm" data-role-del-yes="${esc(r.email)}">ยืนยัน</button><button class="btn sm" data-role-del-no>ยกเลิก</button>`:`<button class="btn ghost danger sm" data-role-del="${esc(r.email)}">${pass?'ยกเลิกรหัส':'เอาสิทธิ์ออก'}</button>`}</div></article>`}).join(''):'<div class="card empty">ยังไม่มีเจ้าหน้าที่</div>'}</div>
   <form class="card form" id="f-role"><h3>เพิ่มเจ้าหน้าที่</h3>
-  <div class="grid2"><label class="f">อีเมล Google<input id="r-email" type="email" required placeholder="name@gmail.com" autocomplete="off"></label>
-  <label class="f">สิทธิ์<select id="r-role"><option value="staff">เจ้าหน้าที่ (บันทึกรายชื่อได้อย่างเดียว)</option><option value="admin">แอดมิน (ทำได้ทุกอย่าง)</option></select></label></div>
-  <div class="row"><button class="btn primary" type="submit">${ic('plus',18)} เพิ่ม</button></div></form>
+  <div class="seg"><button type="button" class="chip" data-rkind="code" aria-pressed="${kind==='code'}">${ic('key',15)} ออกรหัสเจ้าหน้าที่</button><button type="button" class="chip" data-rkind="google" aria-pressed="${kind==='google'}">${ic('users',15)} ใช้อีเมล Google</button></div>
+  ${kind==='code'?`<label class="f">ชื่อเจ้าหน้าที่ (แสดงเป็นผู้บันทึก)<input id="r-name" required maxlength="60" placeholder="เช่น ลุงสมชาย" autocomplete="off"></label>
+  <p class="note">ระบบสุ่มรหัส 8 ตัวให้ เจ้าหน้าที่ใส่รหัสอย่างเดียวก็เข้าระบบได้ ไม่ต้องมีชื่อผู้ใช้หรืออีเมล</p>`
+  :`<label class="f">อีเมล Google<input id="r-email" type="email" required placeholder="name@gmail.com" autocomplete="off"></label>`}
+  <label class="f">สิทธิ์<select id="r-role"><option value="staff">เจ้าหน้าที่ (บันทึกรายชื่อได้อย่างเดียว)</option><option value="admin">แอดมิน (ทำได้ทุกอย่าง)</option></select></label>
+  <div class="row"><button class="btn primary" type="submit">${ic('plus',18)} ${kind==='code'?'ออกรหัส':'เพิ่ม'}</button></div></form>
   <p class="note">แอดมินหลักที่ตั้งไว้ในไฟล์ firebase-config.js: ${esc(ADMIN_EMAILS.join(', ')||'-')}</p>`;
 }
 function importPage(){
@@ -759,12 +809,18 @@ function bind(){
   all('[data-acct-del-yes]',b=>{const id=b.dataset.acctDelYes;ui={};run(async()=>{const w=writeBatch(db);w.delete(doc(db,'accounts',id));
     S.campaigns.filter(c=>(c.acctIds||[]).includes(id)).forEach(c=>w.update(doc(db,'campaigns',c.id),{acctIds:c.acctIds.filter(x=>x!==id)}));
     const rest=S.accounts.filter(a=>a.id!==id);if(rest.length&&!rest.some(a=>a.isDefault))w.update(doc(db,'accounts',rest[0].id),{isDefault:true});await w.commit()},'ลบบัญชีแล้ว',['delete','account',id,`ลบบัญชี ${acctTitle(S.accounts.find(a=>a.id===id)||{})}`])});
-  const fr=$('f-role');if(fr)fr.onsubmit=async e=>{e.preventDefault();const em=$('r-email').value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){toast('อีเมลไม่ถูกต้อง');return}
-    if(await run(()=>setDoc(doc(db,'roles',em),{role:$('r-role').value,addedAt:serverTimestamp()}),'เพิ่ม '+em+' แล้ว',['create','role',em,`เพิ่มเจ้าหน้าที่ ${em} (${$('r-role').value==='admin'?'แอดมิน':'เจ้าหน้าที่'})`])){ui={};render(true)}};
+  all('[data-rkind]',b=>{ui.rKind=b.dataset.rkind;render(true)});
+  const fr=$('f-role');if(fr)fr.onsubmit=async e=>{e.preventDefault();const role=$('r-role').value;
+    if(!$('r-name')){const em=$('r-email').value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){toast('อีเมลไม่ถูกต้อง');return}
+      if(await run(()=>setDoc(doc(db,'roles',em),{role,kind:'google',addedAt:serverTimestamp()}),'เพิ่ม '+em+' แล้ว',['create','role',em,`เพิ่มเจ้าหน้าที่ ${em} (${role==='admin'?'แอดมิน':'เจ้าหน้าที่'})`])){ui={rKind:'google'};render(true)}return}
+    const name=$('r-name').value.trim();if(!name){toast('ใส่ชื่อเจ้าหน้าที่');return}
+    const btn=fr.querySelector('[type=submit]');btn.disabled=true;
+    try{const code=await createCodeStaff(name,role);ui={};render(true);showCreds(name,code)}
+    catch(err){console.error(err);btn.disabled=false;toast(err.code==='auth/operation-not-allowed'?'ต้องเปิด Email/Password ใน Firebase ก่อน (Authentication → Sign-in method)':'ออกรหัสไม่สำเร็จ: '+(err.code||err.message),6000)}};
   all('[data-role]',b=>run(()=>updateDoc(doc(db,'roles',b.dataset.role),{role:b.dataset.to}),'เปลี่ยนสิทธิ์แล้ว',['update','role',b.dataset.role,`เปลี่ยน ${b.dataset.role} เป็น${b.dataset.to==='admin'?'แอดมิน':'เจ้าหน้าที่'}`]));
   all('[data-role-del]',b=>{ui={delRole:b.dataset.roleDel};render(true)});
   all('[data-role-del-no]',()=>{ui={};render(true)});
-  all('[data-role-del-yes]',b=>{ui={};run(()=>deleteDoc(doc(db,'roles',b.dataset.roleDelYes)),'เอาสิทธิ์ออกแล้ว',['delete','role',b.dataset.roleDelYes,`เอาสิทธิ์ ${b.dataset.roleDelYes} ออก`])});
+  all('[data-role-del-yes]',b=>{ui={};const rr=S.roles.find(x=>x.email===b.dataset.roleDelYes),who=rr&&isPassAcct(rr.email)?'รหัสของ '+(rr.name||''):b.dataset.roleDelYes;run(()=>deleteDoc(doc(db,'roles',b.dataset.roleDelYes)),isPassAcct(b.dataset.roleDelYes)?'ยกเลิกรหัสแล้ว รหัสนี้ใช้เข้าระบบไม่ได้อีก':'เอาสิทธิ์ออกแล้ว',['delete','role',b.dataset.roleDelYes,`เอาสิทธิ์ ${who} ออก`])});
   const fi=$('imp-file');if(fi)fi.onchange=()=>readImport(fi.files[0]);
   const sk=$('imp-skipex');if(sk)sk.onchange=()=>previewImport();
   on('imp-go',doImport);

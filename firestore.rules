@@ -15,8 +15,15 @@ service cloud.firestore {
       return signedIn() && request.auth.token.email_verified == true
         && email() in ['krusossocial5344@gmail.com'];
     }
+    // บัญชีชื่อผู้ใช้ที่แอดมินออกให้ (อีเมลภายใน @staff.<โดเมนโปรเจกต์>) หรือบัญชีที่ยืนยันอีเมลแล้ว (เช่น Google)
+    // กันคนสมัครด้วยรหัสผ่านโดยใช้อีเมลของเจ้าหน้าที่คนอื่นก่อนที่เจ้าตัวจะเข้าด้วย Google
+    function trusted() {
+      return request.auth.token.email_verified == true
+        || (request.auth.token.firebase.sign_in_provider == 'password'
+            && email().matches('^[a-z0-9._-]+@staff[.]wat-suakham[.]firebaseapp[.]com$'));
+    }
     function roleIs(r) {
-      return signedIn()
+      return signedIn() && trusted()
         && exists(/databases/$(database)/documents/roles/$(email()))
         && get(/databases/$(database)/documents/roles/$(email())).data.role == r;
     }
