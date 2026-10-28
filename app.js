@@ -1118,8 +1118,19 @@ async function saveQR(id){
   y+=44;x.fillStyle='rgba(255,255,255,.82)';x.font=FONT(600,26);x.fillText(wrapText(x,a.promptpay?'พร้อมเพย์ '+a.promptpay:[a.bank,a.no].filter(Boolean).join(' '),W-80,1)[0],W/2,y);
   if(amt){y+=58;x.fillStyle='#ffd166';x.font=FONT(800,44);x.fillText(baht(amt),W/2,y)}
   x.fillStyle='rgba(255,255,255,.7)';x.font=FONT(500,22);x.fillText('โอนแล้วกรุณาส่งสลิปในหน้าเว็บ เพื่อลงรายนาม',W/2,H-40);
-  const blob=await new Promise(r=>cv.toBlob(r,'image/png'));
-  if(await downloadBlob(blob,`คิวอาร์ทำบุญ-${(a.label||'วัด').replace(/[\\/:*?"<>|]/g,'')}.png`))toast('บันทึกรูปแล้ว เปิดแอปธนาคาร แล้วสแกนจากรูปในอัลบั้ม',5000);
+  const blob=await new Promise(r=>cv.toBlob(r,'image/png')),fname=`คิวอาร์ทำบุญ-${(a.label||'วัด').replace(/[\\/:*?"<>|]/g,'')}.png`;
+  /* มือถือ: iPhone ดาวน์โหลดรูปไปที่แอป "ไฟล์" ไม่ใช่ "รูปภาพ" แอปธนาคารเลยหาไม่เจอ จึงเปิดรูปให้กดค้างบันทึก หรือกดแชร์ → บันทึกภาพ */
+  if(matchMedia('(pointer: coarse)').matches&&!window.claude?.use){
+    const url=URL.createObjectURL(blob),file=new File([blob],fname,{type:'image/png'}),canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
+    const ov=sheet(`<div class="row"><h3>${ic('download',20)} บันทึกรูปคิวอาร์</h3><span class="spacer"></span><button class="iconbtn ghost sm" data-close aria-label="ปิด">${ic('x',18)}</button></div>
+    <img class="qrsaved" src="${url}" alt="รูปคิวอาร์ทำบุญ">
+    <p class="note" style="text-align:center"><b>กดค้างที่รูป</b> แล้วเลือก <b>บันทึกรูปภาพ</b> (หรือ “เพิ่มไปยังรูปภาพ”)<br>จากนั้นเปิดแอปธนาคาร → สแกน → เลือกรูปจากอัลบั้ม</p>
+    <div class="row">${canShare?`<button class="btn primary" id="qs-share">${ic('share',16)} แชร์ / บันทึกภาพ</button>`:''}<button class="btn" id="qs-dl">${ic('download',16)} ดาวน์โหลดไฟล์</button><span class="spacer"></span><button class="btn ghost" data-close>ปิด</button></div>`,'wide');
+    const sh=ov.querySelector('#qs-share');if(sh)sh.onclick=()=>navigator.share({files:[file],title:'คิวอาร์ทำบุญ'}).catch(()=>{});
+    ov.querySelector('#qs-dl').onclick=()=>downloadBlob(blob,fname);
+    return;
+  }
+  if(await downloadBlob(blob,fname))toast('บันทึกรูปแล้ว เปิดแอปธนาคาร แล้วสแกนจากรูปในอัลบั้ม',5000);
 }
 
 /* ---------- files ---------- */

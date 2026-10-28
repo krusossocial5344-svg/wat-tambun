@@ -597,3 +597,4 @@ textarea.nm{min-height:0;resize:none;overflow:hidden;line-height:1.45;padding:9p
 .qrtip{margin:6px 0 0;text-align:center}
 .qrdrop{min-height:120px}
 .qrdrop .drop-in img{max-height:160px;width:auto;background:#fff;border-radius:10px}
+.qrsaved{display:block;width:min(100%,300px);margin:0 auto;border-radius:16px;-webkit-touch-callout:default;user-select:auto}
